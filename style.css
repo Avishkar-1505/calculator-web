@@ -13,7 +13,7 @@ body{
     align-items: center;
     width: 100vw;
     height: 100vh;
-    
+    background-color: beige;
 }
 
 .container {
@@ -29,7 +29,7 @@ body{
 #display{
     width: 370px;
     height: 100px;
-    background-color: gray;
+    background-color: #FFC300 ;
     margin: 4px;
     display: flex;
     align-items: center;
@@ -42,8 +42,7 @@ body{
     height:70px;
     width: 90px;
     border-radius: 6px;
-    background-color: lightgrey;
-    /* text-align: center; */
+    background-color: #DAF7A6 ;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,4 +67,16 @@ body{
 #zero{
     flex-grow: 1;
     margin: 2px;
+}
+
+.operator{
+    background-color: #C70039 ;
+}
+
+.operand{
+    background-color: #FF5733 ;
+}
+
+.equals{
+    background-color: rgb(64, 213, 64);
 }
