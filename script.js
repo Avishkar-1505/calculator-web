@@ -41,29 +41,49 @@ const changeSign = document.querySelector("#changeSign");
 
 const backspace = document.querySelector("#backspace");
 
-backspace.addEventListener("click", ()=>{
-    displayVal = displayVal.slice(0, -1);
-    console.log(displayVal);
+const presableKeys = "0123456789."
+
+function populateDisplay(val){
+
+    
+    if(operand1!==null && operator===null){
+        operand1=null;
+    }
+
+    if(displayVal.length >= maxDigits){
+        return;
+    }
+
+    if(val === '.' && isFloat===false){
+        isFloat = true;
+        displayVal += '.';
+        
+    }
+    else if(val !== '.'){
+        if(displayVal==='0'){
+            displayVal = val;
+        }
+        else{
+            displayVal += val;
+        }
+        
+    }
+    
+    
     display.innerHTML = displayVal;
-})
+}
 
-changeSign.addEventListener("click", ()=>{
-    if(displayVal.length <= maxDigits && isNeg){
-        displayVal = displayVal.slice(1);
-        display.innerHTML = displayVal;
-        isNeg = false;
+
+function handleBackSpace() {
+    if(displayVal[displayVal.length-1]==='.'){
+        isFloat = false;
     }
-    else if(displayVal.length < maxDigits && !isNeg){
-        displayVal = '-' + displayVal;
-        display.innerHTML = displayVal;
-        isNeg = true;
-    }
-
-})
+    displayVal = displayVal.slice(0, -1);
+    display.innerHTML = displayVal;
+}
 
 
-
-equals.addEventListener("click", (e)=>{
+function handleEqual() {
     if(operand1!==null && operator!==null && displayVal!==''){
         operand2 = Number(displayVal);
         let res = operate(operator, operand1, operand2);
@@ -84,13 +104,49 @@ equals.addEventListener("click", (e)=>{
         operator = null;
         displayVal = '';
     }
+}
+
+
+document.addEventListener("keydown", (e)=>{
+    if(presableKeys.includes(e.key)){
+        populateDisplay(e.key);
+    }
+    else if(e.key==="Backspace"){
+        handleBackSpace();
+    }
+    else if(e.key==="Enter"){
+        handleEqual();
+    }
 })
+
+
+
+backspace.addEventListener("click", handleBackSpace)
+
+changeSign.addEventListener("click", ()=>{
+    if(displayVal.length <= maxDigits && isNeg){
+        displayVal = displayVal.slice(1);
+        display.innerHTML = displayVal;
+        isNeg = false;
+    }
+    else if(displayVal.length < maxDigits && !isNeg){
+        displayVal = '-' + displayVal;
+        display.innerHTML = displayVal;
+        isNeg = true;
+    }
+
+})
+
+
+
+equals.addEventListener("click", handleEqual)
 
 clear.addEventListener("click", ()=>{
     displayVal = '0';
     operand1 = null;
     operand2 = null;
     operator = null;
+    isFloat = false;
     display.innerHTML = displayVal;
     isNeg = false;
 })
@@ -99,29 +155,7 @@ clear.addEventListener("click", ()=>{
 
 operands.forEach((opr)=>{
     opr.addEventListener("click", (e)=>{
-        if(operand1!==null && operator===null){
-            operand1=null;
-        }
-
-        if(displayVal.length >= maxDigits){
-            return;
-        }
-
-        if(e.target.innerHTML === '.' && isFloat===false){
-            isFloat = true;
-            displayVal += '.';
-            
-        }
-        else if(e.target.innerHTML !== '.'){
-            if(displayVal==='0'){
-                displayVal = e.target.innerHTML;
-            }
-            else{
-                displayVal += e.target.innerHTML;
-            }
-            
-        }
-        display.innerHTML = displayVal;
+        populateDisplay(e.target.innerHTML);
     })
 })
 
@@ -139,6 +173,9 @@ operators.forEach((op)=>{
             }
             if(res<0){
                 isNeg = true;
+            }
+            if(!Number.isInteger(Number(res))){
+                isFloat = true;
             }
             displayVal = res;
             display.innerHTML = displayVal;
@@ -158,10 +195,6 @@ operators.forEach((op)=>{
         }
     })
 })
-
-
-
-
 
 
 

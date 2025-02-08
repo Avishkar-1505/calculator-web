@@ -38,10 +38,17 @@ body{
     font-weight: 500;
 }
 
-button{
+.button{
     height:70px;
     width: 90px;
     border-radius: 6px;
+    background-color: lightgrey;
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
 }
 
 
